@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+
+    <table id="data">
+      <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>City</th>
+        <th>Zip code</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Website</th>
+      </tr>
+      <%for(let item of items){%>
+      <tr>
+        <td><%=item.id%></td>
+        <td><%=item.name%></td>
+        <td><%= item.username%></td>
+        <td><%=item.email%></td>
+        <td><%=item.address.city%></td>
+        <td><%=item.address.zipcode%></td>
+        <td><%=item.address.geo.lat%></td>
+        <td><%=item.address.geo.lon%></td>
+        <td><%=item.website%></td>
+      </tr>
+      <%}%>
+    </table>
+    <p>
+    </p>
+  </body>
+</html>
