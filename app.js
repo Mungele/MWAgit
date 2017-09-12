@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
-var fetch = require('node-fetch');
-
-var Rx = require ('@reactivex/rxjs');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -27,7 +24,7 @@ app.set('view cache',true);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 const port = app.get('port');
 
 
@@ -40,49 +37,9 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', index);
-//app.use('/users', users);
+app.use('/', index);
+app.use('/users', users);
 
-app.get('/',function (request,response){
-    response.render('index',{title:'Express'});
-});
-
-/*app.get('/users',function (request,response){
-
- const json_users = fetch(jsonplaceholder);
-    json_users
-        .then(function(res) {return res.json();})
-        .then(function(json) {
-             response.render('users',{items:json });
-             response.end();
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
-	//response.render('users',{title:'Express'});
-});*/
-
-/* async function getJson(){
-    try {
-        let json_promise = await
-        fetch(jsonplaceholder);
-    } catch (error){
-        console.log(error.message);
-    }
-}*/
-
-app.get('/users', function (request,response ){
-    var Observer_json_users = Rx.Observable.fromPromise(fetch(jsonplaceholder))
-        .map(function(res) {return res.json();})
-        .map(function(json) {
-            //response.render('users',{items:json });
-            response.send(console.log('Inside the map' +json));
-            response.end();
-        })
-        .subscribe( function(e){ console.log(e);},
-            function(err){console.error(err);},
-            function (){console.info('done');});
-});
 
 app.listen(port,function(){
 	console.log('The server is running on port %s', port);
